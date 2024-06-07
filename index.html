@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Media Numeri</h1>
+    <form id="numeroForm">
+        <label for="numero">Inserisci un numero positivo:</label>
+        <input type="number" id="numero" name="numero">
+        <button type="button" onclick="aggiungiNumero()">Aggiungi</button>
+    </form>
+    <div id="messages"></div>
+    <div id="results"></div>
+
+    <script>
+        let numeri = [];
+
+        function aggiungiNumero() {
+            const numeroInput = document.getElementById('numero');
+            const numero = parseInt(numeroInput.value);
+            const messages = document.getElementById('messages');
+
+            if (isNaN(numero)) {
+                messages.innerHTML = "<p>Per favore, inserisci un numero valido.</p>";
+                return;
+            }
+
+            if (numero < 0) {
+                calcolaMedia();
+                return;
+            }
+
+            if (numero > 0) {
+                numeri.push(numero);
+            }
+
+            numeroInput.value = ''; // Pulisce l'input
+            numeroInput.focus(); // Ritorna il focus sull'input
+            messages.innerHTML = `<p>Numero ${numero} aggiunto. Continua a inserire numeri o inserisci un numero negativo per terminare.</p>`;
+            console.log(numeri);
+        }
+
+        function calcolaMedia() {
+            const results = document.getElementById('results');
+
+            if (numeri.length === 0) {
+                results.innerHTML = "<p>Non hai inserito alcun numero positivo.</p>";
+                return;
+            }
+
+            const somma = numeri.reduce((acc, curr) => acc + curr, 0);
+            const media = somma / numeri.length;
+
+            results.innerHTML = `
+                <p>Numeri inseriti: ${numeri.join(', ')}</p>
+                <p>Media dei numeri: ${media.toFixed(2)}</p>
+            `;
+
+            // Disabilitare l'input e il pulsante per prevenire ulteriori inserimenti
+            document.getElementById('numero').disabled = true;
+            document.querySelector('button').disabled = true;
+        }
+    </script>
+</body>
+</html>
